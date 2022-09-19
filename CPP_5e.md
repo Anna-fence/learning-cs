@@ -232,3 +232,81 @@ int main()
 * `void*`指针
 
   不能直接操作`void*`指针所指的对象，因为不知道这个对象到底是什么类型（*以`void*`*的视角来看，内存空间仅仅是内存空间，没办法访问内存空间中所存的对象）
+
+## chap3 字符串、向量和数组
+
+`string`：可变长的字符序列
+
+`vector`：某种给定类型对象的可变长序列
+
+### 3.1 命名空间的using声明
+
+* 每个名字都需要独立的`using`声明
+
+```C++
+#include<iostream>
+using std::cin;
+using std::cout;using std::endl;
+```
+
+* 头文件不应该包含`using`声明
+
+### 3.2 标准库类型`string`
+
+使用前需要：
+
+```c++
+#include <string>
+using std::string;
+```
+
+#### 3.2.1 定义和初始化`string`对象
+
+```c++
+#include <string>
+using std::string;
+//初始化string的方式
+string s1;  //默认初始化，空串
+string s2(s1);  //s2是s1的副本，直接初始化
+string s2 = s1;  //等价于s2(s1)，拷贝初始化
+string s3("value");  //s3是字面值“value”的副本，不包括字面值最后的空字符
+string s3 = "value";
+sting s4(10, 'c');  //把s4初始化为由连续n个字符c组成的串
+```
+
+* 用等号初始化一个变量，实际上执行的是拷贝初始化
+* 不使用等号的话，执行的是直接初始化
+
+*尽管`string s2(s1);`和`string s2=s1;`效果是一样的，但是前者是直接初始化，后者是拷贝初始化*
+
+* **注意：**在执行读取操作时，`string`对象会自动忽略开头的空白（空格符、换行符、制表符）
+
+* 使用`getline`读取一整行
+
+  `getline`只要一遇到换行符就结束读取操作并且返回结果，**换行符也是被读取的**
+
+  但是一旦用`string`保存这个字符串，会丢弃换行符
+
+* `string`的`empty`和`size`操作
+
+  `empy`更像是一个`is_empty`的方法，返回布尔值，如果是空的话就返回`True`
+
+  `size`操作返回的是一个`size_type`的类型。是一个无符号类型。
+
+  **如果一条表达式中已经有了`size()`函数就不要再使用`int`了，这样可以避免混用`int`和`unsigned`可能带来的问题**
+
+* 字面值和`string`对象相加
+
+  按顺序往后加，加号左右至少有一个是`string`。比如说：
+
+  ```c++
+  #include <string>
+  using std::string;
+  
+  sting1 = "Hello";
+  string2 = string1 + ","; //合法
+  string3 = string1 + "," + “World”;  //合法，相当于结合了一下
+  string4 =  "," + “World” + string1;  //非法，两个字面值不能直接相加
+  ```
+
+**字符串字面值并不是标准库类型`string`的对象**
